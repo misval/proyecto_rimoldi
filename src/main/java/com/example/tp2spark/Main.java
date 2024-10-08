@@ -6,7 +6,6 @@ import static spark.Spark.*;
 
 public class Main {
     public static void main(String[] args) {
-        Controller controlador = new Controller();
         get("/propiedades", Controller.getPropiedades);
         get("/propiedades/:id", Controller.getPropiedad);
         post("/propiedades", Controller.addPropiedad);

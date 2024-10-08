@@ -1,17 +1,22 @@
 package com.example.tp2spark;
 
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
+// import org.sql2o.Sql2o;
+
+import static spark.Spark.*;
 
 public class Main {
     public static void main(String[] args) {
-        PropiedadControlador controlador = new PropiedadControlador();
-        get("/propiedades", controlador::getPropiedades);
-        get("/propiedades/:id", controlador::getPropiedad);
-        post("/propiedades", controlador::addPropiedad);
-        put("/propiedades", controlador::updatePropiedad);
-        delete("/propiedades", controlador::deletePropiedad);
+        Controller controlador = new Controller();
+        get("/propiedades", Controller.getPropiedades);
+        get("/propiedades/:id", Controller.getPropiedad);
+        post("/propiedades", Controller.addPropiedad);
+        put("/propiedades", Controller.updatePropiedad);
+        delete("/propiedades", Controller.deletePropiedad);
+        // try {
+        //     Sql2o sql2o = DbConexion.getSql2o();
+        //     System.out.println("conexion a la base de datos exitosa");
+        // } catch (Exception e) {
+        //     System.out.println("error al conextarse a la base de datos");
+        // }
     }
 }

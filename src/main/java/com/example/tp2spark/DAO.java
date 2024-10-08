@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.sql2o.Connection;
 
-public class PropiedadDAO implements PropiedadDAOInterface {
+public class DAO implements DAOInterface {
   private final Connection con;
 
-  public PropiedadDAO(Connection con) {
+  public DAO(Connection con) {
     this.con = con;
   }
   
@@ -38,7 +38,7 @@ public class PropiedadDAO implements PropiedadDAOInterface {
   @Override
   public Propiedad updatePropiedad(Propiedad propiedad) {
     try {
-      con.createQuery("UPDATE PROPIEDADES SET ubicacion='" + propiedad.getUbicacion() + "', TIPO='" + propiedad.getTipoPropiedad() + "', DESTINO='" + propiedad.getDestinoPropiedad() + "', AMBIENTES=" + propiedad.getAmbientes().toString() + ", BANIOS=" + propiedad.getBanios().toString() + ", MTS_CUADRADOS=" + propiedad.getMts_cuadrados().toString() + " WHERE ID = " + propiedad.getId() + ";").executeUpdate();
+      con.createQuery("UPDATE PROPIEDADES SET ubicacion='" + propiedad.getUbicacion() + "', TIPO='" + propiedad.getTipo() + "', DESTINO='" + propiedad.getDestino() + "', AMBIENTES=" + propiedad.getAmbientes().toString() + ", BANIOS=" + propiedad.getBanios().toString() + ", MTS_CUADRADOS=" + propiedad.getMts_cuadrados().toString() + " WHERE ID = " + propiedad.getId() + ";").executeUpdate();
     
     } catch (Exception e) {
       System.err.println("Error al ejecutar la query: " + e.getMessage());
@@ -50,7 +50,7 @@ public class PropiedadDAO implements PropiedadDAOInterface {
   @Override
   public Propiedad addPropiedad(Propiedad propiedad) {
     try {
-      con.createQuery("INSERT INTO propiedades (ID, UBICACION, TIPO, DESTINO, AMBIENTES, BANIOS, MTS_CUADRADOS) VALUES (" + propiedad.getId() + ", '" + propiedad.getUbicacion() + "', '" + propiedad.getTipoPropiedad() + "', '" + propiedad.getDestinoPropiedad() + "', " + propiedad.getAmbientes() + ", " + propiedad.getBanios() + ", " + propiedad.getMts_cuadrados() + ");").executeUpdate();
+      con.createQuery("INSERT INTO propiedades (ID, UBICACION, TIPO, DESTINO, AMBIENTES, BANIOS, MTS_CUADRADOS) VALUES (" + propiedad.getId() + ", '" + propiedad.getUbicacion() + "', '" + propiedad.getTipo() + "', '" + propiedad.getDestino() + "', " + propiedad.getAmbientes() + ", " + propiedad.getBanios() + ", " + propiedad.getMts_cuadrados() + ");").executeUpdate();
       return propiedad;
     } catch (Exception e) {
       System.err.println("Error al ejecutar la query: " + e.getMessage());

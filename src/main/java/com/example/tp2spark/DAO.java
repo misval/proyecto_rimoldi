@@ -48,13 +48,13 @@ public class DAO implements DAOInterface {
   }
 
   @Override
-  public Propiedad addPropiedad(Propiedad propiedad) {
+  public boolean addPropiedad(Propiedad propiedad) {
     try {
       con.createQuery("INSERT INTO propiedades (ID, UBICACION, TIPO, DESTINO, AMBIENTES, BANIOS, MTS_CUADRADOS) VALUES (" + propiedad.getId() + ", '" + propiedad.getUbicacion() + "', '" + propiedad.getTipo() + "', '" + propiedad.getDestino() + "', " + propiedad.getAmbientes() + ", " + propiedad.getBanios() + ", " + propiedad.getMts_cuadrados() + ");").executeUpdate();
-      return propiedad;
+      return true;
     } catch (Exception e) {
       System.err.println("Error al ejecutar la query: " + e.getMessage());
-      return null;
+      return false;
     }
   }
 

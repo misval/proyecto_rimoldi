@@ -12,13 +12,15 @@ import spark.Response;
 
 public class Controller {
   private static DAO servicio;
-  private final Connection con;
   private final static Gson gson = new Gson();
 
-  public Controller() {
-    this.con = DbConexion.getSql2o().open();
-    servicio = new DAO(this.con);
-  }
+  static {
+    try (Connection con = DbConexion.getSql2o().open()) {
+        servicio = new DAO(con);
+    } catch (Exception e) {
+        System.err.println("Error initializing DAO: " + e.getMessage());
+    }
+}
 
   public static Route getPropiedades = (Request req, Response res) -> {
       List<Propiedad> response = servicio.getAllPropiedades();
@@ -52,24 +54,17 @@ public class Controller {
     Integer mts_cuadrados = Integer.valueOf(req.queryParams("mtsCuadrados"));
     
     Propiedad propiedad = new Propiedad(id, ubicacion, tipoPropiedad, destinoPropiedad, ambientes, banios, mts_cuadrados);
-    
-        
-    System.out.println(ubicacion);
-    System.out.println(tipoPropiedad);
-    System.out.println(destinoPropiedad);
-    System.out.println(ambientes);
-    System.out.println(banios);
-    System.out.println(propiedad.toString());
 
-    Propiedad response = null;
+    boolean response = false;
 
     try {
       response = servicio.addPropiedad(propiedad);
+      res.status(200);
+      return gson.toJson(response);
     } catch (Exception e) {
-      System.out.println("Todo mal");
-    };
-
-    return gson.toJson(response);
+      res.status(400);
+      return new Gson().toJson("Error controlador: " + e.getMessage());
+    }
   };
   
   // public String addPropiedad(Request request, Response response) {

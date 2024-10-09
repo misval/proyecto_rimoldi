@@ -25,14 +25,14 @@ public class DAO implements DAOInterface {
 
   @Override
   public Propiedad getPropiedadById(String id) {
-    Propiedad propiedad;
+    
     try {
-      propiedad = con.createQuery("SELECT * FROM PROPIEDADES WHERE ID = " + id + ";").executeAndFetchFirst(Propiedad.class);
+      return con.createQuery("SELECT * FROM PROPIEDADES WHERE ID = " + id + ";").executeAndFetchFirst(Propiedad.class);
     } catch (Exception e) {
       System.err.println("Error al ejecutar la query: " + e.getMessage());
       return null;
     }
-    return propiedad;
+    
   }
 
   @Override

@@ -25,4 +25,7 @@ public class Propiedad {
     this.mts_cuadrados = mts_cuadrados;
   }
 
+  public void addPropietario(Propietario propietario) {
+    this.propietario = propietario;
+  };
 }

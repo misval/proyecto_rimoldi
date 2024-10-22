@@ -14,7 +14,10 @@ public class DAOPropiedad implements IDAOPropiedades {
   public List<Propiedad> getAllPropiedades() {
     List<Propiedad> propiedades;
     try {
-      propiedades = con.createQuery("SELECT * FROM propiedades;").executeAndFetch(Propiedad.class);
+      propiedades = con
+          .createQuery(
+              "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados` FROM propiedades;")
+          .executeAndFetch(Propiedad.class);
     } catch (Exception e) {
       System.err.println("Error al ejecutar la query: " + e.getMessage());
       return null;

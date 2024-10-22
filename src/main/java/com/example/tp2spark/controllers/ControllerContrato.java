@@ -46,6 +46,7 @@ public class ControllerContrato {
         String idPropiedad = request.queryParams("idprop");// deberia ser nombre, lo selecciona en la iltima pagina
 
         try {
+            response.status(201);
             Garante garante1 = new Garante(CUIL, DNI, nombre, email, fechaNacimiento, ingresos, trabajo, emailTrabajo);
             Inquilino inquilino = new Inquilino(CUILInquilino, DNIInquilino, nombreInquiliino, emailInquiliino,
                     fechaNacimientoInquiliino, mascotasInquiliino, empresaTrabajoInquiliino, cantidadIntegrantes,

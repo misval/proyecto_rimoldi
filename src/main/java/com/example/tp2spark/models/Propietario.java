@@ -8,4 +8,19 @@ import lombok.EqualsAndHashCode;
 public class Propietario extends Persona {
     private String CBU;
 
+    public Propietario(String cBU, String CUIL,
+            String DNI,
+            String nombre,
+            String email,
+            String fechaNacimiento) {
+
+        super.CUIL = CUIL;
+        super.DNI = DNI;
+        super.nombre = nombre;
+        super.email = email;
+        super.fechaNacimiento = fechaNacimiento;
+        this.CBU = cBU;
+
+    }
+
 }

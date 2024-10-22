@@ -4,6 +4,7 @@ package com.example.tp2spark;
 
 import static spark.Spark.*;
 
+import com.example.tp2spark.controllers.ControllerContrato;
 import com.example.tp2spark.controllers.ControllerPropiedades;
 
 public class Main {
@@ -16,7 +17,7 @@ public class Main {
         // contrato
         // get("/contrato", ControllerContrato.getContratos);
         // get("/contrato/:id", ControllerContrato.getContrato);
-        // post("/contrato", ControllerContrato.addContrato);
+        post("/contrato", ControllerContrato.addContrato);
         // try {
         // Sql2o sql2o = DbConexion.getSql2o();
         // System.out.println("conexion a la base de datos exitosa");

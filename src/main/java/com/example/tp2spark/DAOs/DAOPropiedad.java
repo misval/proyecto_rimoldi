@@ -33,14 +33,11 @@ public class DAOPropiedad implements IDAOPropiedades {
     try {
       // tomo la propiedad solo con atributos de la base de datos
       Propiedad propiedad = con.createQuery(
-          "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados` FROM PROPIEDADES WHERE ID = "
+          "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados`,`Propietario_PERSONA_CUIL` FROM PROPIEDADES WHERE ID = "
               + id + ";")
           .executeAndFetchFirst(Propiedad.class);
       // busco al propietario con id
-      Propietario propietario = servicioPropietario.getPropietario((con.createQuery(
-          "SELECT `Propietario_PERSONA_CUIL` FROM PROPIEDADES WHERE ID = "
-              + id + ";"))
-          .toString());
+      Propietario propietario = servicioPropietario.getPropietario(propiedad.getPropietario_PERSONA_CUIL());
 
       // agrego propietario al bjeto
       propiedad.addPropietario(propietario);

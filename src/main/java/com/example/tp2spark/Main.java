@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         get("/propiedades", ControllerPropiedades.getPropiedades);
         get("/propiedades/:id", ControllerPropiedades.getPropiedad);
+        post("/propiedad", ControllerPropiedades.addPropiedad);
 
         // contrato
         post("/contrato", ControllerContrato.addContrato);

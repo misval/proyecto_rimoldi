@@ -8,6 +8,7 @@ import com.example.tp2spark.models.Contrato;
 import com.example.tp2spark.models.Garante;
 import com.example.tp2spark.models.Inquilino;
 import com.example.tp2spark.models.Propiedad;
+import com.example.tp2spark.JSON.ContratoJSON;
 import com.google.gson.Gson;
 
 import spark.Route;
@@ -36,50 +37,50 @@ public class ControllerContrato {
     };
 
     public static Route addContrato = (Request request, Response response) -> {
-
-        String CUILInquilino = request.queryParams("cuilInquilino");
-        String DNIInquilino = request.queryParams("dniInquilino");
-        String nombreInquiliino = request.queryParams("nombreInquilino");
-        String emailInquiliino = request.queryParams("emailInquilino");
-        String fechaNacimientoInquiliino = request.queryParams("fechanacimientoInquilino");
-        char mascotasInquiliino = request.queryParams("mascotas").charAt(0);
-        String empresaTrabajoInquiliino = request.queryParams("trabajoInquilino");
-        int cantidadIntegrantes = Integer.parseInt(request.queryParams("integrantes"));
-        double ingresosInquilino = Double.parseDouble(request.queryParams("ingresos"));
-
-        String CUIL = request.queryParams("cuil");
-        String DNI = request.queryParams("dni");
-        String nombre = request.queryParams("nombre");
-        String email = request.queryParams("email");
-        String fechaNacimiento = request.queryParams("fechanacimiento");
-        double ingresos = Double.parseDouble(request.queryParams("ingresos"));
-        String trabajo = request.queryParams("trabajo");
-        String emailTrabajo = request.queryParams("emailTrabajo");
-
-        String fechaInicio = request.queryParams("fechaInicio");
-        String fechaFin = request.queryParams("fechaFin");
-        String idPropiedad = request.queryParams("idprop");// deberia ser nombre, lo selecciona en la iltima pagina
-
         try {
-            response.status(201);
-            Garante garante1 = new Garante(CUIL, DNI, nombre, email, fechaNacimiento, ingresos, trabajo, emailTrabajo);
-            Inquilino inquilino = new Inquilino(CUILInquilino, DNIInquilino, nombreInquiliino, emailInquiliino,
-                    fechaNacimientoInquiliino, mascotasInquiliino, empresaTrabajoInquiliino, cantidadIntegrantes,
-                    ingresosInquilino);
-            Propiedad propiedad = servicioPropiedad.getPropiedadById(idPropiedad);
 
-            Contrato contrato = new Contrato(fechaInicio, fechaFin);
+            // Deserializa el JSON recibido en la clase ContratoRequest
+            ContratoJSON contratoRequest = new Gson().fromJson(request.body(), ContratoJSON.class);
+
+            // Crea las instancias necesarias
+            Garante garante1 = new Garante(
+                    contratoRequest.garante.CUIL,
+                    contratoRequest.garante.DNI,
+                    contratoRequest.garante.nombre,
+                    contratoRequest.garante.email,
+                    contratoRequest.garante.fechaNacimiento,
+                    contratoRequest.garante.ingresos,
+                    contratoRequest.garante.trabajo,
+                    contratoRequest.garante.emailTrabajo);
+
+            Inquilino inquilino = new Inquilino(
+                    contratoRequest.inquilino.CUILInquilino,
+                    contratoRequest.inquilino.DNIInquilino,
+                    contratoRequest.inquilino.nombreInquilino,
+                    contratoRequest.inquilino.emailInquilino,
+                    contratoRequest.inquilino.fechaNacimientoInquilino,
+                    contratoRequest.inquilino.mascotas,
+                    contratoRequest.inquilino.empresaTrabajoInquilino,
+                    contratoRequest.inquilino.cantidadIntegrantes,
+                    contratoRequest.inquilino.ingresosInquilino);
+
+            Propiedad propiedad = servicioPropiedad.getPropiedadById(contratoRequest.idPropiedad);
+
+            Contrato contrato = new Contrato(contratoRequest.fechaInicio, contratoRequest.fechaFin);
             contrato.agregarPropiedad(propiedad);
             contrato.agregarGarante(garante1);
             contrato.agregarInquilino(inquilino);
 
+            // Guarda los datos
             servicioGarante.addGarante(garante1);
             servicioInquilino.addInquilino(inquilino);
 
+            response.status(201);
             return servicioContrato.addContrato(contrato);
         } catch (Exception e) {
             response.status(400);
             return new Gson().toJson("Error controlador: " + e.getMessage());
         }
     };
+
 }

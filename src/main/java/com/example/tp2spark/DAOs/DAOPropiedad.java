@@ -5,12 +5,16 @@ import java.util.List;
 import org.sql2o.Connection;
 
 import com.example.tp2spark.DbConexion;
+import com.example.tp2spark.Crud.CrudDAO;
 import com.example.tp2spark.models.Propiedad;
 import com.example.tp2spark.models.Propietario;
 
-public class DAOPropiedad implements IDAOPropiedades {
-  private final Connection con = DbConexion.getSql2o().open();
+public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
+
   private static DAOPropietario servicioPropietario = new DAOPropietario();
+
+  String tableName = "propiedades";
+  String tablePK = "id";
 
   @Override
   public List<Propiedad> getAllPropiedades() {
@@ -18,7 +22,7 @@ public class DAOPropiedad implements IDAOPropiedades {
     try {
       propiedades = con
           .createQuery(
-              "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados` FROM propiedades;")
+              "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados_cubiertos` FROM propiedades;")
           .executeAndFetch(Propiedad.class);
     } catch (Exception e) {
       System.err.println("Error al ejecutar la query: " + e.getMessage());
@@ -33,14 +37,13 @@ public class DAOPropiedad implements IDAOPropiedades {
     try {
       // tomo la propiedad solo con atributos de la base de datos
       Propiedad propiedad = con.createQuery(
-          "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados`,`Propietario_PERSONA_CUIL` FROM PROPIEDADES WHERE ID = "
+          "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados_cubiertos`,`Propietario_PERSONA_CUIL` FROM PROPIEDADES WHERE ID = "
               + id + ";")
           .executeAndFetchFirst(Propiedad.class);
       // busco al propietario con id
       Propietario propietario = servicioPropietario.getPropietario(propiedad.getPropietario_PERSONA_CUIL());
 
       // agrego propietario al bjeto
-      propiedad.addPropietario(propietario);
 
       return propiedad;
     } catch (Exception e) {
@@ -48,5 +51,20 @@ public class DAOPropiedad implements IDAOPropiedades {
       return null;
     }
 
+  }
+
+  @Override
+  public Class getTClass() {
+    return Propiedad.class;
+  }
+
+  @Override
+  public String getTablePK() {
+    return tablePK;
+  }
+
+  @Override
+  public String getTableName() {
+    return tableName;
   }
 }

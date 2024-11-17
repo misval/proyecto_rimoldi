@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Inquilino extends Persona {
     private ArrayList<Contrato> contratos = new ArrayList<Contrato>();
-    private char mascotas; // booleano traeria problemas
+    private int mascotas; // booleano traeria problemas
     private double ingresos;
     private String empresaTrabajo;
     private int cantidadIntegrantes;
@@ -19,7 +19,7 @@ public class Inquilino extends Persona {
             String nombre,
             String email,
             String fechaNacimiento,
-            char mascotas,
+            int mascotas,
             String empresaTrabajo,
             int cantidadIntegrantes,
             double ingresos) {

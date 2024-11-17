@@ -19,6 +19,21 @@ public class ControllerContrato {
     private static DAOInquilino servicioInquilino = new DAOInquilino();
     private static DAOPropiedad servicioPropiedad = new DAOPropiedad();
     private static DAOContrato servicioContrato = new DAOContrato();
+    private final static Gson gson = new Gson();
+
+    public static Route getContrato = (Request request, Response response) -> {
+        try {
+            response.status(200);
+            String CUIL = request.params(":CUIL");
+            return gson.toJson(servicioContrato.getContrato(CUIL));
+        } catch (NullPointerException e) {
+            response.status(404);
+            return new Gson().toJson("Null pointer exception: " + e.getMessage());
+        } catch (Exception e) {
+            response.status(400);
+            return new Gson().toJson("Error controlador: " + e.getMessage());
+        }
+    };
 
     public static Route addContrato = (Request request, Response response) -> {
 

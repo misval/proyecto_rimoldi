@@ -14,6 +14,7 @@ public class Main {
 
         // contrato
         post("/contrato", ControllerContrato.addContrato);
+        get("/contrato/:CUIL", ControllerContrato.getContrato);
 
     }
 }

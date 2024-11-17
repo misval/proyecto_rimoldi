@@ -34,8 +34,20 @@ public abstract class CrudDAO<T> {
                 continue;
             }
 
+            // Obtener el valor del atributo
+            Object value = field.get(t); // Extrae el valor del atributo desde el objeto `t`
+
+            // Agregar el nombre del campo a las columnas
             columnsInsertSQL.append(name).append(",");
-            valuesInsertSQL.append(":").append(name).append(",");
+
+            // Agregar el valor directamente a los valores
+            if (value == null) {
+                valuesInsertSQL.append("NULL,");
+            } else if (value instanceof String) {
+                valuesInsertSQL.append("'").append(value.toString().replace("'", "''")).append("',");
+            } else {
+                valuesInsertSQL.append(value).append(",");
+            }
         }
 
         // Eliminar la última coma

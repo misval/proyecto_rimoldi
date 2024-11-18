@@ -2,16 +2,10 @@ package com.example.tp2spark.DAOs;
 
 import java.util.List;
 
-import org.sql2o.Connection;
-
-import com.example.tp2spark.DbConexion;
 import com.example.tp2spark.Crud.CrudDAO;
 import com.example.tp2spark.models.Propiedad;
-import com.example.tp2spark.models.Propietario;
 
 public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
-
-  private static DAOPropietario servicioPropietario = new DAOPropietario();
 
   String tableName = "propiedades";
   String tablePK = "id";
@@ -41,7 +35,6 @@ public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
               + id + ";")
           .executeAndFetchFirst(Propiedad.class);
       // busco al propietario con id
-      Propietario propietario = servicioPropietario.getPropietario(propiedad.getPropietario_PERSONA_CUIL());
 
       // agrego propietario al bjeto
 
@@ -51,6 +44,13 @@ public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
       return null;
     }
 
+  }
+
+  public Integer getUltimoId() {
+    Integer id = con.createQuery(
+        "SELECT MAX(id) AS id FROM propiedades;")
+        .executeAndFetchFirst(Integer.class);
+    return id;
   }
 
   @Override

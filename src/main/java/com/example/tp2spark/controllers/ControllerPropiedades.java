@@ -90,10 +90,7 @@ public class ControllerPropiedades {
       Imagenes imagen;
       for (int i = 1; i < jsonArrayParsed.size(); i++) {
         imagen = gson.fromJson(jsonArrayParsed.get(i), Imagenes.class);
-        // Asignar el id de la propiedad a la entidad Imagenes
         imagen.setIdPropiedad(id);
-        System.out.println(imagen);
-        // Insertar la imagen en la base de datos
         servicioImagenes.insert(imagen);
       }
       response.type("application/json");

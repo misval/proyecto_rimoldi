@@ -1,5 +1,7 @@
 package com.example.tp2spark.controllers;
 
+import java.util.List;
+
 import com.example.tp2spark.DAOs.DAOContrato;
 import com.example.tp2spark.DAOs.DAOGarante;
 import com.example.tp2spark.DAOs.DAOInquilino;
@@ -26,8 +28,23 @@ public class ControllerContrato {
         try {
 
             String CUIL = request.params(":CUIL");
+
+            List<Garante> garantes;
+            Inquilino inquilino;
+            Propiedad propiedad;
+
+            List<Contrato> contratos = servicioContrato.getContrato(CUIL);
+            for (Contrato contrato : contratos) {
+                garantes = servicioGarante.getGaranteByContrato(contrato.getIdContrato());
+                inquilino = servicioInquilino.getInquilinoByContrato(contrato.getIdContrato());
+                propiedad = servicioPropiedad.getPropiedadByContrato(contrato.getIdContrato());
+                contrato.setPropiedad(propiedad);
+                contrato.setInquilino(inquilino);
+                contrato.setGarantes(garantes);
+            }
             response.status(200);
-            return gson.toJson(servicioContrato.getContrato(CUIL));
+            return gson.toJson(contratos);
+            // return gson.toJson(servicioContrato.getContrato(CUIL));
         } catch (NullPointerException e) {
             response.status(404);
             return new Gson().toJson("Null pointer exception: " + e.getMessage());

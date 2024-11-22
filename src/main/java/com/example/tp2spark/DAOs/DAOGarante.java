@@ -1,5 +1,7 @@
 package com.example.tp2spark.DAOs;
 
+import java.util.List;
+
 import org.sql2o.Connection;
 
 import com.example.tp2spark.DbConexion;
@@ -39,6 +41,19 @@ public class DAOGarante implements IDAOGarante {
         } catch (Exception e) {
             System.err.println("Error al ejecutar la query: " + e.getMessage());
             return false;
+        }
+    }
+
+    @Override
+    public List<Garante> getGaranteByContrato(int idContrato) {
+        try {
+            return con.createQuery(
+                    "SELECT CUIL, DNI,nombre,fechanacimiento, ingresos, trabajo, emailTrabajo FROM personas INNER JOIN (garantes inner join contrato_has_garante ON Garante_Persona_CUIL = Persona_CUIL) ON CUIL = Garante_Persona_CUIL  WHERE Contrato_idContrato ="
+                            + idContrato + ";")
+                    .executeAndFetch(Garante.class);
+        } catch (Exception e) {
+            System.err.println("Error al ejecutar la query: " + e.getMessage());
+            return null;
         }
     }
 

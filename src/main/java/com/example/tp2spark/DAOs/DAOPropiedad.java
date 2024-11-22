@@ -63,4 +63,19 @@ public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
   public String getTableName() {
     return tableName;
   }
+
+  @Override
+  public Propiedad getPropiedadByContrato(int idContrato) {
+    try {
+      // tomo la propiedad solo con atributos de la base de datos
+      Propiedad propiedad = con.createQuery(
+          "SELECT ubicacion, tipo, destino FROM propiedades INNER JOIN contratos ON id = Propiedades_id AND IdContrato ="
+              + idContrato + ";")
+          .executeAndFetchFirst(Propiedad.class);
+      return propiedad;
+    } catch (Exception e) {
+      System.err.println("Error al ejecutar la query: " + e.getMessage());
+      return null;
+    }
+  }
 }

@@ -34,10 +34,6 @@ public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
           "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados_cubiertos`,`Propietario_PERSONA_CUIL` FROM PROPIEDADES WHERE ID = "
               + id + ";")
           .executeAndFetchFirst(Propiedad.class);
-      // busco al propietario con id
-
-      // agrego propietario al bjeto
-
       return propiedad;
     } catch (Exception e) {
       System.err.println("Error al ejecutar la query: " + e.getMessage());

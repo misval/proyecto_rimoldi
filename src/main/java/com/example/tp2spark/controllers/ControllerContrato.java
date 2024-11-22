@@ -24,8 +24,9 @@ public class ControllerContrato {
 
     public static Route getContrato = (Request request, Response response) -> {
         try {
-            response.status(200);
+
             String CUIL = request.params(":CUIL");
+            response.status(200);
             return gson.toJson(servicioContrato.getContrato(CUIL));
         } catch (NullPointerException e) {
             response.status(404);

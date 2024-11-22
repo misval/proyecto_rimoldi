@@ -3,6 +3,7 @@ package com.example.tp2spark.DAOs;
 import org.sql2o.Connection;
 
 import com.example.tp2spark.DbConexion;
+import com.example.tp2spark.models.Garante;
 import com.example.tp2spark.models.Inquilino;
 
 public class DAOInquilino implements IDAOInquilino {
@@ -28,6 +29,19 @@ public class DAOInquilino implements IDAOInquilino {
         } catch (Exception e) {
             System.err.println("Error al ejecutar la query: " + e.getMessage());
             return false;
+        }
+    }
+
+    @Override
+    public Inquilino getInquilinoByContrato(int idContrato) {
+        try {
+            return con.createQuery(
+                    "SELECT CUIL, DNI, nombre, email, fechaNacimiento, mascotas, empresaTrabajo, cantidadIntegrantes, ingresos FROM contratos INNER JOIN (inquilinos inner join personas ON CUIL = Persona_CUIL) ON Inquilino_Persona_CUIL = CUIL WHERE idContrato = "
+                            + idContrato + ";")
+                    .executeAndFetchFirst(Inquilino.class);
+        } catch (Exception e) {
+            System.err.println("Error al ejecutar la query: " + e.getMessage());
+            return null;
         }
     }
 

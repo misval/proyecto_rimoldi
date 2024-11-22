@@ -9,4 +9,6 @@ public interface IDAOPropiedades {
 
   Propiedad getPropiedadById(String id);
 
+  Propiedad getPropiedadByContrato(int idContrato);
+
 }

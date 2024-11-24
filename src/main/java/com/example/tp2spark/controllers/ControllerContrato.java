@@ -1,5 +1,7 @@
 package com.example.tp2spark.controllers;
 
+import static spark.Spark.routes;
+
 import java.util.List;
 
 import com.example.tp2spark.DAOs.DAOContrato;
@@ -23,6 +25,26 @@ public class ControllerContrato {
     private static DAOPropiedad servicioPropiedad = new DAOPropiedad();
     private static DAOContrato servicioContrato = new DAOContrato();
     private final static Gson gson = new Gson();
+
+    public static Route getContratoById = (Request request, Response response) -> {
+        try {
+            int idContrato = Integer.parseInt(request.params(":id"));
+            Contrato contrato = servicioContrato.getContratoById(idContrato);
+            List<Garante> garantes = servicioGarante.getGaranteByContrato(contrato.getIdContrato());
+            Inquilino inquilino = servicioInquilino.getInquilinoByContrato(contrato.getIdContrato());
+            Propiedad propiedad = servicioPropiedad.getPropiedadByContrato(contrato.getIdContrato());
+            contrato.setPropiedad(propiedad);
+            contrato.setInquilino(inquilino);
+            contrato.setGarantes(garantes);
+            return gson.toJson(contrato);
+        } catch (NullPointerException e) {
+            response.status(404);
+            return new Gson().toJson("Null pointer exception: " + e.getMessage());
+        } catch (Exception e) {
+            response.status(400);
+            return new Gson().toJson("Error controlador: " + e.getMessage());
+        }
+    };
 
     public static Route getContrato = (Request request, Response response) -> {
         try {

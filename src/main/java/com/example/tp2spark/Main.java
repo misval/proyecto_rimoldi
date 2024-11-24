@@ -14,6 +14,7 @@ public class Main {
         // Segunda entrega
         post("/propiedad", ControllerPropiedades.addPropiedad);
         get("/contrato/:CUIL", ControllerContrato.getContrato);
+        get("/contratoId/:id", ControllerContrato.getContratoById);
 
     }
 }

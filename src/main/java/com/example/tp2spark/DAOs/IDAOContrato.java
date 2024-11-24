@@ -8,4 +8,6 @@ public interface IDAOContrato {
     public boolean addContrato(Contrato contrato);
 
     public List<Contrato> getContrato(String CUIL);
+
+    public Contrato getContratoById(int idContrato);
 }

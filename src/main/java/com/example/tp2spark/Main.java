@@ -1,7 +1,5 @@
 package com.example.tp2spark;
 
-// import org.sql2o.Sql2o;
-
 import static spark.Spark.*;
 
 import com.example.tp2spark.controllers.ControllerContrato;

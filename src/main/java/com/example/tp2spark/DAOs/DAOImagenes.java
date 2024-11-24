@@ -5,12 +5,12 @@ import java.util.List;
 import com.example.tp2spark.Crud.CrudDAO;
 import com.example.tp2spark.models.Imagenes;
 
-public class DAOImagenes extends CrudDAO implements IDAOImagenes {
+public class DAOImagenes extends CrudDAO<Imagenes> implements IDAOImagenes {
     String tableName = "imagenes";
     String tablePK = "id";
 
     @Override
-    public Class getTClass() {
+    public Class<Imagenes> getTClass() {
         return Imagenes.class;
     }
 

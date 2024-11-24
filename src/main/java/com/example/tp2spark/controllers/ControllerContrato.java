@@ -34,6 +34,12 @@ public class ControllerContrato {
             Propiedad propiedad;
 
             List<Contrato> contratos = servicioContrato.getContrato(CUIL);
+
+            if (contratos.isEmpty()) {
+                response.status(404);
+                return "No se ha encantrado ningun contrato";
+            }
+            ;
             for (Contrato contrato : contratos) {
                 garantes = servicioGarante.getGaranteByContrato(contrato.getIdContrato());
                 inquilino = servicioInquilino.getInquilinoByContrato(contrato.getIdContrato());

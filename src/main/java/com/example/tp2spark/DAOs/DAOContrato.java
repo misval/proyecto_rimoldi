@@ -1,15 +1,11 @@
 package com.example.tp2spark.DAOs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.sql2o.Connection;
 
 import com.example.tp2spark.DbConexion;
 import com.example.tp2spark.models.Contrato;
-import com.example.tp2spark.models.Garante;
-import com.example.tp2spark.models.Inquilino;
-import com.example.tp2spark.models.Propiedad;
 
 public class DAOContrato implements IDAOContrato {
         private final Connection con = DbConexion.getSql2o().open();

@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.tp2spark.Crud.CrudDAO;
 import com.example.tp2spark.models.Propiedad;
 
-public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
+public class DAOPropiedad extends CrudDAO<Propiedad> implements IDAOPropiedades {
 
   String tableName = "propiedades";
   String tablePK = "id";
@@ -16,7 +16,7 @@ public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
     try {
       propiedades = con
           .createQuery(
-              "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados_cubiertos` FROM propiedades;")
+              "SELECT `id`, `ubicacion`, `tipo`, `destino`, `ambientes`, `banios`, `mts_cuadrados_cubiertos`,`descripcion`,`Propietario_PERSONA_CUIL` FROM propiedades;")
           .executeAndFetch(Propiedad.class);
     } catch (Exception e) {
       System.err.println("Error al ejecutar la query: " + e.getMessage());
@@ -50,7 +50,7 @@ public class DAOPropiedad extends CrudDAO implements IDAOPropiedades {
   }
 
   @Override
-  public Class getTClass() {
+  public Class<Propiedad> getTClass() {
     return Propiedad.class;
   }
 

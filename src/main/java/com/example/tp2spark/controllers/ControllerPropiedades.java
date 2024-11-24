@@ -25,8 +25,47 @@ public class ControllerPropiedades {
 
   public static Route getPropiedades = (Request req, Response res) -> {
     try {
+      JsonArray propiedadesJson = new JsonArray();
+
+      List<Propiedad> propiedades = servicioPropiedad.getAllPropiedades();
+      JsonObject propiedadJson;
+
+      Propietario propietario;
+      JsonObject propietarioJson;
+
+      List<Imagenes> listaImagenes;
+      JsonArray jsonArrayFotos;
+      JsonObject imagenJson;
+
+      for (Propiedad propiedad : propiedades) {
+        // Obtener propietario asociado
+        propietario = servicioPropietario.getPropietario(propiedad.getPropietario_PERSONA_CUIL());
+
+        // Convertir propiedad y propietario a JsonObjects
+        propiedadJson = JsonParser.parseString(gson.toJson(propiedad)).getAsJsonObject();
+        propietarioJson = JsonParser.parseString(gson.toJson(propietario)).getAsJsonObject();
+
+        // Agregar el propietario al JSON de la propiedad
+        propiedadJson.add("Propietario", propietarioJson);
+
+        // Obtener imágenes y procesarlas
+        listaImagenes = servicioImagenes.getImagenes(propiedad.getId().toString());
+        jsonArrayFotos = new JsonArray();
+
+        for (Imagenes imagen : listaImagenes) {
+          // Crear un nuevo JsonObject para cada imagen con solo el campo URL
+          imagenJson = new JsonObject();
+          imagenJson.addProperty("url", imagen.getURL());
+          jsonArrayFotos.add(imagenJson);
+        }
+        // Agregar las imágenes procesadas al JSON de la propiedad
+        propiedadJson.add("Imagenes", jsonArrayFotos);
+
+        propiedadesJson.add(propiedadJson);
+      }
+      ;
       res.status(200);
-      return gson.toJson(servicioPropiedad.getAllPropiedades());
+      return propiedadesJson.toString();
     } catch (Exception e) {
       res.status(400);
       return new Gson().toJson("Error controlador: " + e.getMessage());
@@ -82,7 +121,7 @@ public class ControllerPropiedades {
   public static Route addPropiedad = (Request request, Response response) -> {
     JsonArray jsonArrayParsed = JsonParser.parseString(request.body()).getAsJsonArray();
     Propiedad propiedad = gson.fromJson(jsonArrayParsed.get(0), Propiedad.class);
-    System.out.println(jsonArrayParsed.size());
+
     try {
       servicioPropiedad.insert(propiedad);
 

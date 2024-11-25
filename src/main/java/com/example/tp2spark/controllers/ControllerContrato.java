@@ -1,7 +1,5 @@
 package com.example.tp2spark.controllers;
 
-import static spark.Spark.routes;
-
 import java.util.List;
 
 import com.example.tp2spark.DAOs.DAOContrato;

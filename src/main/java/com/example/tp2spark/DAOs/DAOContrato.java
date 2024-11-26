@@ -65,4 +65,19 @@ public class DAOContrato implements IDAOContrato {
                 }
         }
 
+        @Override
+        public List<Contrato> getAllContratos() {
+                List<Contrato> contratos;
+                try {
+                        contratos = con.createQuery(
+                                        "SELECT idContrato, fechaInicio, fechaFin, fechaCancelacion FROM contratos")
+                                        .executeAndFetch(Contrato.class);
+
+                        return contratos;
+                } catch (Exception e) {
+                        System.err.println("Error al ejecutar la query: " + e.getMessage());
+                        return null;
+                }
+        }
+
 }

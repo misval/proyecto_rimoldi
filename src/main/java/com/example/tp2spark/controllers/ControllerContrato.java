@@ -127,4 +127,38 @@ public class ControllerContrato {
         }
     };
 
+    public static Route getAllContratos = (Request request, Response response) -> {
+        try {
+
+            List<Garante> garantes;
+            Inquilino inquilino;
+            Propiedad propiedad;
+
+            List<Contrato> contratos = servicioContrato.getAllContratos();
+
+            if (contratos.isEmpty()) {
+                response.status(404);
+                return "No se ha encantrado ningun contrato";
+            }
+            ;
+            for (Contrato contrato : contratos) {
+                garantes = servicioGarante.getGaranteByContrato(contrato.getIdContrato());
+                inquilino = servicioInquilino.getInquilinoByContrato(contrato.getIdContrato());
+                propiedad = servicioPropiedad.getPropiedadByContrato(contrato.getIdContrato());
+                contrato.setPropiedad(propiedad);
+                contrato.setInquilino(inquilino);
+                contrato.setGarantes(garantes);
+            }
+            response.status(200);
+            return gson.toJson(contratos);
+            // return gson.toJson(servicioContrato.getContrato(CUIL));
+        } catch (NullPointerException e) {
+            response.status(404);
+            return new Gson().toJson("Null pointer exception: " + e.getMessage());
+        } catch (Exception e) {
+            response.status(400);
+            return new Gson().toJson("Error controlador: " + e.getMessage());
+        }
+    };
+
 }

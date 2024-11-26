@@ -15,6 +15,7 @@ public class Main {
         post("/propiedad", ControllerPropiedades.addPropiedad);
         get("/contrato/:CUIL", ControllerContrato.getContrato);
         get("/contratoId/:id", ControllerContrato.getContratoById);
+        get("/contratos", ControllerContrato.getAllContratos);
 
     }
 }

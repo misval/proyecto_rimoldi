@@ -10,4 +10,6 @@ public interface IDAOContrato {
     public List<Contrato> getContrato(String CUIL);
 
     public Contrato getContratoById(int idContrato);
+
+    public List<Contrato> getAllContratos();
 }
